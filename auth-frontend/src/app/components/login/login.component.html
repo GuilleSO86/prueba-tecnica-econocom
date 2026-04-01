@@ -1,0 +1,107 @@
+<div class="login-page">
+  <!-- Left Side - Illustration -->
+  <div class="login-page__illustration">
+    <img src="assets/images/login.svg" alt="Login illustration" class="login-page__illustration-img">
+  </div>
+
+  <!-- Right Side - Login Form -->
+  <div class="login-page__form-section">
+    <div class="login-form-container">
+      <!-- Logo -->
+      <div class="login-form-container__logo">
+        <img src="assets/images/logos/Logo-RD.svg" alt="realdooh">
+      </div>
+
+      <!-- Title -->
+      <h1 class="login-form-container__title">Inicia sesión en tu cuenta</h1>
+
+      <!-- Login Form -->
+      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-form">
+        <!-- Email Field -->
+        <mat-form-field appearance="outline" class="login-form__field">
+          <input
+            matInput
+            type="email"
+            formControlName="email"
+            placeholder="Correo electrónico"
+            required>
+          <mat-error *ngIf="loginForm.get('email')?.hasError('required')">
+            El correo electrónico es obligatorio
+          </mat-error>
+          <mat-error *ngIf="loginForm.get('email')?.hasError('email')">
+            Introduce un correo electrónico válido
+          </mat-error>
+        </mat-form-field>
+
+        <!-- Password Field -->
+        <mat-form-field appearance="outline" class="login-form__field">
+          <input
+            matInput
+            [type]="hidePassword ? 'password' : 'text'"
+            formControlName="password"
+            placeholder="Contraseña"
+            required>
+          <button
+            mat-icon-button
+            matSuffix
+            type="button"
+            (click)="hidePassword = !hidePassword"
+            [attr.aria-label]="'Ocultar contraseña'"
+            [attr.aria-pressed]="hidePassword"
+            class="login-form__toggle">
+            <mat-icon>{{ hidePassword ? 'visibility_off' : 'visibility' }}</mat-icon>
+          </button>
+          <mat-error *ngIf="loginForm.get('password')?.hasError('required')">
+            La contraseña es obligatoria
+          </mat-error>
+        </mat-form-field>
+
+        <!-- Error Message -->
+        <div class="login-form__error" *ngIf="errorMessage">
+          {{ errorMessage }}
+        </div>
+
+        <!-- Submit Button -->
+        <button
+          mat-raised-button
+          type="submit"
+          class="login-form__button login-form__button--primary"
+          [disabled]="isLoading || loginForm.invalid">
+          <span *ngIf="!isLoading">ENTRAR</span>
+          <mat-spinner diameter="20" *ngIf="isLoading"></mat-spinner>
+        </button>
+
+        <!-- SSO Section -->
+        <div class="login-form__sso-section">
+          <p class="login-form__sso-text">Otras formas de acceso:</p>
+          <button
+            mat-raised-button
+            type="button"
+            class="login-form__button login-form__button--sso"
+            (click)="initiateSsoLogin()"
+            [disabled]="isLoading">
+            <span *ngIf="!isLoading">ENTRAR CON SSO</span>
+            <mat-spinner diameter="20" *ngIf="isLoading"></mat-spinner>
+          </button>
+        </div>
+
+        <!-- Register Link -->
+        <p class="login-form__register">
+          ¿No tienes cuenta? <a href="#" class="login-form__register-link">Regístrate</a>
+        </p>
+      </form>
+    </div>
+
+    <!-- Footer -->
+    <div class="login-page__footer">
+      <div class="login-page__language">
+        <mat-icon>language</mat-icon>
+        <span>IDIOMA: ES</span>
+        <mat-icon>expand_more</mat-icon>
+      </div>
+      <div class="login-page__company-logo">
+        <img src="assets/images/logos/Econocom.svg" alt="Econocom">
+      </div>
+    </div>
+  </div>
+</div>

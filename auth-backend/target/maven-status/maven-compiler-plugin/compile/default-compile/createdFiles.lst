@@ -1,0 +1,15 @@
+com/econocom/auth/model/LoginResponse.class
+com/econocom/auth/service/AuthService.class
+com/econocom/auth/util/JwtUtil.class
+com/econocom/auth/controller/AuthController.class
+com/econocom/auth/model/LoginRequest.class
+com/econocom/auth/AuthApplication.class
+com/econocom/auth/config/SecurityConfig.class
+com/econocom/auth/model/SsoCallbackRequest.class
+com/econocom/auth/model/ErrorResponse.class
+com/econocom/auth/repository/UsuarioRepository.class
+com/econocom/auth/filter/JwtAuthenticationFilter.class
+com/econocom/auth/model/SsoRedirectResponse.class
+com/econocom/auth/service/AuthServiceImpl.class
+com/econocom/auth/config/CorsConfig.class
+com/econocom/auth/model/Usuario.class

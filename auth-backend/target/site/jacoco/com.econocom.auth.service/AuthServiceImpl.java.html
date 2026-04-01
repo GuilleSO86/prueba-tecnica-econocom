@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AuthServiceImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">auth-backend</a> &gt; <a href="index.source.html" class="el_package">com.econocom.auth.service</a> &gt; <span class="el_source">AuthServiceImpl.java</span></div><h1>AuthServiceImpl.java</h1><pre class="source lang-java linenums">package com.econocom.auth.service;
+
+import com.econocom.auth.exception.InvalidCredentialsException;
+import com.econocom.auth.exception.SsoException;
+import com.econocom.auth.model.LoginResponse;
+import com.econocom.auth.model.Usuario;
+import com.econocom.auth.repository.UsuarioRepository;
+import com.econocom.auth.util.JwtUtil;
+import com.econocom.auth.util.LoggingUtil;
+
+import lombok.extern.slf4j.Slf4j;
+
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+<span class="fc" id="L19">@Slf4j</span>
+@Service
+@Transactional(readOnly = true)
+public class AuthServiceImpl implements AuthService {
+
+<span class="fc" id="L24">    private static final String CLASS_NAME = AuthServiceImpl.class.getSimpleName();</span>
+
+
+    private static final String TOKEN_TYPE = &quot;Bearer&quot;;
+<span class="fc" id="L28">    private static final String SSO_EMAIL = &quot;sso@econocom.com&quot;;</span>
+
+    private final JwtUtil jwtUtil;
+    private final UsuarioRepository usuarioRepository;
+
+    @Value(&quot;${jwt.expiration}&quot;)
+    private long jwtExpiration;
+
+    @Value(&quot;${jwt.refresh-expiration}&quot;)
+    private long jwtRefreshExpiration;
+
+    @Autowired
+<span class="fc" id="L40">    public AuthServiceImpl(JwtUtil jwtUtil, UsuarioRepository usuarioRepository) {</span>
+
+<span class="fc" id="L42">        this.jwtUtil = jwtUtil;</span>
+<span class="fc" id="L43">        this.usuarioRepository = usuarioRepository;</span>
+<span class="fc" id="L44">    }</span>
+
+    @Override
+    public LoginResponse authenticate(String email, String password) {
+
+<span class="fc" id="L49">        String methodName = (new Throwable()).getStackTrace()[0].getMethodName();</span>
+
+
+<span class="fc" id="L52">        LoggingUtil.log(log, LoggingUtil.INFO, CLASS_NAME, methodName, &quot;Authenticating user&quot;);</span>
+
+<span class="fc bfc" id="L54" title="All 4 branches covered.">        if (StringUtils.isAllBlank(email) || StringUtils.isAllBlank(password)) {</span>
+
+<span class="fc" id="L56">            throw new InvalidCredentialsException();</span>
+        }
+
+<span class="fc" id="L59">        Usuario usuario = usuarioRepository.findByEmail(email)</span>
+<span class="fc" id="L60">                                           .orElseThrow(InvalidCredentialsException::new);</span>
+
+<span class="fc" id="L62">        LoggingUtil.log(log, LoggingUtil.DEBUG, CLASS_NAME, methodName, </span>
+<span class="fc" id="L63">                        String.format(&quot;User data: %s&quot;, usuario.toString()));</span>
+
+<span class="fc bfc" id="L65" title="All 2 branches covered.">        if (!password.equals(usuario.getPassword())) {</span>
+
+<span class="fc" id="L67">            throw new InvalidCredentialsException();</span>
+        }
+
+<span class="fc bfc" id="L70" title="All 2 branches covered.">        if (!usuario.isActivo()) {</span>
+
+<span class="fc" id="L72">            throw new InvalidCredentialsException();</span>
+        }
+
+<span class="fc" id="L75">        String token = jwtUtil.generateToken(email);</span>
+<span class="fc" id="L76">        String refreshToken = jwtUtil.generateRefreshToken(email);</span>
+
+<span class="fc" id="L78">        String userName = usuario.getNombre();</span>
+
+<span class="fc" id="L80">        LoggingUtil.log(log, LoggingUtil.DEBUG, CLASS_NAME, methodName, </span>
+<span class="fc" id="L81">                        String.format(&quot;Token generated for user (%s): %s&quot;, userName, token));</span>
+        
+<span class="fc" id="L83">        LoggingUtil.log(log, LoggingUtil.DEBUG, CLASS_NAME, methodName, </span>
+<span class="fc" id="L84">                        String.format(&quot;RefreshToken generated for user (%s): %s&quot;, userName, refreshToken));</span>
+
+
+<span class="fc" id="L87">        LoggingUtil.log(log, LoggingUtil.INFO, CLASS_NAME, methodName, &quot;User authenticated&quot;);</span>
+
+<span class="fc" id="L89">        return new LoginResponse(token, refreshToken, jwtExpiration, TOKEN_TYPE);</span>
+    }
+
+    @Override
+    public LoginResponse authenticateSso(String code) {
+
+<span class="fc" id="L95">        String methodName = (new Throwable()).getStackTrace()[0].getMethodName();</span>
+
+
+<span class="fc" id="L98">        LoggingUtil.log(log, LoggingUtil.INFO, CLASS_NAME, methodName, &quot;Checking 'code'&quot;);</span>
+
+<span class="fc bfc" id="L100" title="All 2 branches covered.">        if (StringUtils.isAllBlank(code)) {</span>
+            
+<span class="fc" id="L102">            throw new SsoException(&quot;SSO authorization code is required&quot;);</span>
+        }
+
+<span class="fc" id="L105">        usuarioRepository.findByEmail(SSO_EMAIL)</span>
+<span class="fc" id="L106">                         .orElseThrow(() -&gt; new SsoException(&quot;SSO user not configured&quot;));</span>
+
+<span class="fc" id="L108">        String token = jwtUtil.generateToken(SSO_EMAIL);</span>
+<span class="fc" id="L109">        String refreshToken = jwtUtil.generateRefreshToken(SSO_EMAIL);</span>
+
+<span class="fc" id="L111">        LoggingUtil.log(log, LoggingUtil.DEBUG, CLASS_NAME, methodName, </span>
+<span class="fc" id="L112">                        String.format(&quot;Token generated: %s&quot;, token));</span>
+<span class="fc" id="L113">        LoggingUtil.log(log, LoggingUtil.DEBUG, CLASS_NAME, methodName, </span>
+<span class="fc" id="L114">                        String.format(&quot;Refresh token generated: %s&quot;, refreshToken));</span>
+
+<span class="fc" id="L116">        return new LoginResponse(token, refreshToken, jwtExpiration, TOKEN_TYPE);</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

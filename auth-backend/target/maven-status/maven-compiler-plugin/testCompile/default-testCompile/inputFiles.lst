@@ -1,0 +1,12 @@
+/home/paula/Documentos/Econocom/auth-backend/src/test/java/com/econocom/auth/exception/SsoExceptionTest.java
+/home/paula/Documentos/Econocom/auth-backend/src/test/java/com/econocom/auth/service/AuthServiceImplTest.java
+/home/paula/Documentos/Econocom/auth-backend/src/test/java/com/econocom/auth/AuthFlowEndToEndTest.java
+/home/paula/Documentos/Econocom/auth-backend/src/test/java/com/econocom/auth/config/SecurityConfigIntegrationTest.java
+/home/paula/Documentos/Econocom/auth-backend/src/test/java/com/econocom/auth/util/LoggingUtilTest.java
+/home/paula/Documentos/Econocom/auth-backend/src/test/java/com/econocom/auth/exception/AuthenticationExceptionTest.java
+/home/paula/Documentos/Econocom/auth-backend/src/test/java/com/econocom/auth/controller/AuthControllerIntegrationTest.java
+/home/paula/Documentos/Econocom/auth-backend/src/test/java/com/econocom/auth/exception/GlobalExceptionHandlerIntegrationTest.java
+/home/paula/Documentos/Econocom/auth-backend/src/test/java/com/econocom/auth/util/JwtUtilTest.java
+/home/paula/Documentos/Econocom/auth-backend/src/test/java/com/econocom/auth/exception/InvalidCredentialsExceptionTest.java
+/home/paula/Documentos/Econocom/auth-backend/src/test/java/com/econocom/auth/filter/JwtAuthenticationFilterIntegrationTest.java
+/home/paula/Documentos/Econocom/auth-backend/src/test/java/com/econocom/auth/repository/UsuarioRepositoryIntegrationTest.java

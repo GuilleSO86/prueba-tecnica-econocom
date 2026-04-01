@@ -1,0 +1,16 @@
+<div class="callback-container">
+  <mat-card class="callback-card">
+    <mat-card-content class="callback-card__content">
+      <ng-container *ngIf="isLoading; else errorTemplate">
+        <mat-spinner diameter="48"></mat-spinner>
+        <p class="callback-card__message">Procesando autenticación SSO...</p>
+      </ng-container>
+
+      <ng-template #errorTemplate>
+        <mat-icon class="callback-card__icon callback-card__icon--error">error_outline</mat-icon>
+        <p class="callback-card__message callback-card__message--error">{{ errorMessage }}</p>
+        <p class="callback-card__redirect">Redirigiendo a la página de inicio de sesión...</p>
+      </ng-template>
+    </mat-card-content>
+  </mat-card>
+</div>

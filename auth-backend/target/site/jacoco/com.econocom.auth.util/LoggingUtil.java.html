@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>LoggingUtil.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">auth-backend</a> &gt; <a href="index.source.html" class="el_package">com.econocom.auth.util</a> &gt; <span class="el_source">LoggingUtil.java</span></div><h1>LoggingUtil.java</h1><pre class="source lang-java linenums">package com.econocom.auth.util;
+
+import org.slf4j.Logger;
+
+/**
+ * Utility class for standardized logging across the application.
+ */
+public final class LoggingUtil {
+
+    private LoggingUtil() {
+        // Utility class
+    }
+
+
+    public static final String MSG_LOG = &quot;%s [%s] :: [%s] :: %s&quot;;   // Format: PROJECT [Class] :: [Method] :: Message
+    public static final String MSG_LOG_PROJECT = &quot;ECONOCOM_AUTH&quot;;
+
+    public static final String TRACE = &quot;trace&quot;;
+    public static final String DEBUG = &quot;debug&quot;;
+    public static final String INFO = &quot;info&quot;;
+    public static final String WARN = &quot;warn&quot;;
+    public static final String ERROR = &quot;error&quot;;
+
+
+    /**
+     * Logs a message with standardized format.
+     *
+     * @param logger the SLF4J logger
+     * @param level the log level (trace, debug, info, warn, error)
+     * @param className the class name
+     * @param methodName the method name
+     * @param message the message to log
+     */
+    public static void log(Logger logger, String level, String className, String methodName, String message) {
+
+<span class="fc bfc" id="L36" title="All 2 branches covered.">        if (logger == null) {</span>
+<span class="fc" id="L37">            return;</span>
+        }
+
+<span class="fc" id="L40">        String safeLevel = null;</span>
+
+<span class="fc bfc" id="L42" title="All 2 branches covered.">        if (level != null) {</span>
+
+<span class="fc" id="L44">            safeLevel = level;</span>
+
+<span class="fc" id="L46">        } else {</span>
+<span class="fc" id="L47">            safeLevel = INFO;</span>
+        }
+
+<span class="fc" id="L50">        String formatted = String.format(MSG_LOG, MSG_LOG_PROJECT, className, methodName, message);</span>
+
+<span class="fc bfc" id="L52" title="All 6 branches covered.">        switch (safeLevel.toLowerCase()) {</span>
+            
+            case TRACE:
+<span class="fc" id="L55">                logger.trace(formatted);</span>
+<span class="fc" id="L56">                break;</span>
+
+            case DEBUG:
+<span class="fc" id="L59">                logger.debug(formatted);</span>
+<span class="fc" id="L60">                break;</span>
+
+            case INFO:
+<span class="fc" id="L63">                logger.info(formatted);</span>
+<span class="fc" id="L64">                break;</span>
+
+            case WARN:
+<span class="fc" id="L67">                logger.warn(formatted);</span>
+<span class="fc" id="L68">                break;</span>
+
+            case ERROR:
+<span class="fc" id="L71">                logger.error(formatted);</span>
+<span class="fc" id="L72">                break;</span>
+                
+            default:
+<span class="fc" id="L75">                logger.info(formatted);</span>
+        }
+<span class="fc" id="L77">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

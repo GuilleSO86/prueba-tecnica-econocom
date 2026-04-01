@@ -1,0 +1,36 @@
+/* You can add global styles to this file, and also import other style files */
+@import 'styles/variables';
+@import 'styles/custom-material-theme';
+
+/*********************************************/
+html, body { height: 100%; }
+body { 
+  margin: 0; 
+  font-family: $font-stack;
+  background-color: $background-primary;
+  color: $neutral-10;
+}
+
+/*********************************************/
+// Global styles
+* {
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/*********************************************/
+// Utility classes
+.success-snackbar {
+  background-color: $success !important;
+  color: $white !important;
+}
+
+.error-snackbar {
+  background-color: $error !important;
+  color: $white !important;
+}
