@@ -266,7 +266,7 @@ Configurado para permitir comunicación entre:
 
 ---
 
-**Repositorio Git**: [URL del repositorio]  
+**Repositorio Git**: [[GitHub](https://github.com/GuilleSO86/prueba-tecnica-econocom)]  
 **Desarrollado por**: Guillermo Sanes Orrego  
 **Fecha de entrega**: 01/04/2026
 
